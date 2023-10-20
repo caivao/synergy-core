@@ -98,7 +98,7 @@ ClientApp::parseArgs(int argc, const char* const* argv)
                 // server.  a bad port will never get better.  patch by Brent
                 // Priddy.
                 if (!args().m_restartable || e.getError() == XSocketAddress::kBadPort) {
-                    LOG((CLOG_PRINT "%s: %s" BYE,
+                    LOG((CLOG_CRIT "%s: %s" BYE,
                         args().m_pname, e.what(), args().m_pname));
                     m_bye(kExitFailed);
                 }
@@ -313,7 +313,7 @@ ClientApp::handleClientFailed(const Event& e, void*)
         std::unique_ptr<Client::FailInfo> info(static_cast<Client::FailInfo*>(e.getData()));
 
         updateStatus(String("Failed to connect to server: ") + info->m_what + " Trying next address...");
-        LOG((CLOG_NOTE "Failed to connect to server: %s. Trying next address...", info->m_what.c_str()));
+        LOG((CLOG_NOTE "failed to connect to server=%s, trying next address", info->m_what.c_str()));
         if (!m_suspended) {
             scheduleClientRestart(nextRestartTimeout());
         }
